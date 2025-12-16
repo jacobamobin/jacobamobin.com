@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header';
+import Hero from '../components/Hero';
+
+// Import data
+import profile from '../data/profile.json';
+---
+
+<Layout title={`${profile.name} | ${profile.title}`}>
+  <Header client:load />
+  
+  <main>
+    <Hero 
+      client:load
+      name={profile.name}
+      title={profile.title}
+      avatarUrl={profile.images.avatar}
+    />
+    
+    <!-- Placeholder sections with consistent styling -->
+    <section id="about" class="py-32 bg-dark relative">
+      <div class="absolute inset-0 bg-grid opacity-20" />
+      <div class="relative max-w-6xl mx-auto px-6">
+        <div class="text-center">
+          <span class="text-sm font-medium text-accent uppercase tracking-widest">About</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">Coming Soon</h2>
+          <p class="text-text-muted max-w-lg mx-auto">This section is under development.</p>
+        </div>
+      </div>
+    </section>
+    
+    <section id="projects" class="py-32 bg-subtle relative">
+      <div class="absolute inset-0 bg-grid opacity-20" />
+      <div class="relative max-w-6xl mx-auto px-6">
+        <div class="text-center">
+          <span class="text-sm font-medium text-accent uppercase tracking-widest">Projects</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">Coming Soon</h2>
+          <p class="text-text-muted max-w-lg mx-auto">This section is under development.</p>
+        </div>
+      </div>
+    </section>
+    
+    <section id="experience" class="py-32 bg-dark relative">
+      <div class="absolute inset-0 bg-grid opacity-20" />
+      <div class="relative max-w-6xl mx-auto px-6">
+        <div class="text-center">
+          <span class="text-sm font-medium text-accent uppercase tracking-widest">Experience</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">Coming Soon</h2>
+          <p class="text-text-muted max-w-lg mx-auto">This section is under development.</p>
+        </div>
+      </div>
+    </section>
+    
+    <section id="contact" class="py-32 bg-subtle relative">
+      <div class="absolute inset-0 bg-grid opacity-20" />
+      <div class="relative max-w-6xl mx-auto px-6">
+        <div class="text-center">
+          <span class="text-sm font-medium text-accent uppercase tracking-widest">Contact</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">Coming Soon</h2>
+          <p class="text-text-muted max-w-lg mx-auto">This section is under development.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

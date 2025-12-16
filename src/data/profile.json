@@ -1,0 +1,56 @@
+{
+    "name": "Jacob Mobin",
+    "title": "Software Developer",
+    "location": "Toronto, ON",
+    "email": "",
+    "bio": "",
+    "images": {
+        "avatar": "/images/profile/pfp.png",
+        "logo": "/images/profile/logo.png",
+        "banner": "/images/profile/banners.png"
+    },
+    "resume": "/Resume.pdf",
+    "socials": {
+        "github": "https://github.com/jacobamobin",
+        "linkedin": "",
+        "twitter": "",
+        "email": ""
+    },
+    "skills": [
+        {
+            "category": "Languages",
+            "items": [
+                "Python",
+                "Swift",
+                "Java",
+                "JavaScript",
+                "TypeScript",
+                "ASM",
+                "C",
+                "C++",
+                "Lisp"
+            ]
+        },
+        {
+            "category": "Frameworks",
+            "items": [
+                "React",
+                "React Native",
+                "SwiftUI",
+                "SwiftData",
+                "Node.js",
+                "Flask",
+                "Spring Boot"
+            ]
+        },
+        {
+            "category": "Tools & Platforms",
+            "items": [
+                "Firebase",
+                "Supabase",
+                "Google Cloud",
+                "Docker"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "id": "callings-ai",
+    "company": "Callings.AI",
+    "companyUrl": "https://callings.ai",
+    "position": "Software Developer",
+    "type": "Part-time, Remote",
+    "location": "San Mateo, CA",
+    "startDate": "Jun. 2025",
+    "endDate": "Present",
+    "current": true,
+    "showDescription": true,
+    "description": [
+      "Normalized 7M+ job records from multiple vendors into a unified format for natural language search.",
+      "Re-engineered LLM enrichment pipelines handling 220K jobs/day, cutting costs by 433%.",
+      "Developed TF-IDF Random Forest and BERT models to fill missing job fields with 94% accuracy.",
+      "Built an embedding-based matching system ranking candidates from 12K+ Contacts.",
+      "Created automated benchmarking tools to evaluate accuracy, speed, and cost across LLM providers."
+    ],
+    "technologies": [
+      {
+        "name": "Python",
+        "color": "#3776AB"
+      },
+      {
+        "name": "Machine Learning",
+        "color": "#FF6B6B"
+      },
+      {
+        "name": "BERT",
+        "color": "#4285F4"
+      },
+      {
+        "name": "TF-IDF",
+        "color": "#E67E22"
+      },
+      {
+        "name": "Random Forest",
+        "color": "#38A169"
+      },
+      {
+        "name": "LLM",
+        "color": "#9B59B6"
+      },
+      {
+        "name": "Data Processing",
+        "color": "#38B2AC"
+      }
+    ]
+  },
+  {
+    "id": "resumate",
+    "company": "Resumate (StreamlineX)",
+    "companyUrl": "https://resumate.ca",
+    "position": "Software Engineer",
+    "type": "Part-time",
+    "location": "Toronto, ON",
+    "startDate": "Feb. 2025",
+    "endDate": "Present",
+    "current": true,
+    "showDescription": false,
+    "description": [
+      "Developed a Chrome extension that uses an LLM to generate job-specific resume rewrites in one click.",
+      "Built a Node.js/Firebase backend that parses resumes and streams LaTeX-styled, Base64-encoded PDFs.",
+      "Designed Firestore schemas for user data and integrated Stripe for credit-based payments.",
+      "Implemented Google Sign-In with Firebase, OAuth, JWT, and RESTful APIs to secure access.",
+      "Engineered a comprehensive editor with ATS keyword highlighting and copilot-style editing."
+    ],
+    "technologies": [
+      {
+        "name": "Chrome Extension",
+        "color": "#4285F4"
+      },
+      {
+        "name": "Node.js",
+        "color": "#339933"
+      },
+      {
+        "name": "Firebase",
+        "color": "#FFCA28"
+      },
+      {
+        "name": "Firestore",
+        "color": "#FF9500"
+      },
+      {
+        "name": "LaTeX",
+        "color": "#008080"
+      },
+      {
+        "name": "Stripe",
+        "color": "#635BFF"
+      },
+      {
+        "name": "OAuth",
+        "color": "#000000"
+      },
+      {
+        "name": "JWT",
+        "color": "#000000"
+      },
+      {
+        "name": "RESTful APIs",
+        "color": "#FF6B6B"
+      },
+      {
+        "name": "LLM",
+        "color": "#9B59B6"
+      }
+    ]
+  }
+]
