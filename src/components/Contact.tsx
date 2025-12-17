@@ -27,8 +27,8 @@ export default function Contact() {
                         </h2>
 
                         <p className="text-lg md:text-xl text-white/50 mb-12 leading-relaxed">
-                            I'm currently looking for new opportunities. Whether you have a question
-                            or just want to say hi, I'll try my best to get back to you!
+                            I'm currently seeking Summer 2026 internships. Whether you have a question
+                            or just want to say hi, you can contact me at the email below!
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
