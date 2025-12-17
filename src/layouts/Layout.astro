@@ -26,7 +26,13 @@ const { title, description = "Software Developer specializing in full-stack deve
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/images/profile/pfp.png" />
+    
+    <script is:inline>
+      if (typeof window !== "undefined" && window.location.protocol === 'http:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        window.location.href = window.location.href.replace('http:', 'https:');
+      }
+    </script>
     
     <!-- Google Fonts - Geist-like Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
