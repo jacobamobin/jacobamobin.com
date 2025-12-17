@@ -413,7 +413,7 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                         <FiGithub className="w-5 h-5" />
                     </motion.a>
                     <motion.a
-                        href="https://linkedin.com/in/jacobamobin"
+                        href="https://www.linkedin.com/in/jacob-mobin/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-3.5 rounded-full bg-white/[0.05] border border-white/[0.08] text-white/60 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200"

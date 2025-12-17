@@ -183,7 +183,7 @@ export default function Hackathons() {
                                     Featured Posts
                                 </h3>
                                 <a
-                                    href="https://linkedin.com/in/jacobamobin"
+                                    href="https://www.linkedin.com/in/jacob-mobin/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-xs text-white/40 hover:text-white transition-colors"
