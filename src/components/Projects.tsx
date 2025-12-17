@@ -158,7 +158,7 @@ export default function Projects() {
             </div>
 
             {/* 2. Projects Marquee Section */}
-            <div className="relative w-full">
+            <div id="project-carousel" className="relative w-full pt-16 scroll-mt-24">
                 <div className="container mx-auto px-6 mb-8">
                     <h2 className="text-2xl font-bold text-white">Select Projects</h2>
                 </div>

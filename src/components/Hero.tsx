@@ -366,8 +366,7 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                     transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
                     className="text-white/40 max-w-lg mx-auto text-lg mb-12 leading-relaxed"
                 >
-                    Crafting elegant solutions to complex problems.
-                    Building the future, one commit at a time.
+                    I just like building things.
                 </motion.p>
 
                 {/* CTA Buttons */}
@@ -378,7 +377,7 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                     className="flex flex-col sm:flex-row gap-4 justify-center mb-14"
                 >
                     <motion.a
-                        href="#projects"
+                        href="#project-carousel"
                         className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#0a0a0b] font-semibold text-[15px] rounded-full hover:bg-white/90 transition-colors duration-200"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}

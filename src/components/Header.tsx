@@ -5,7 +5,7 @@ import { FiArrowUpRight } from 'react-icons/fi';
 
 const navLinks = [
     { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
+    { name: 'Projects', href: '#project-carousel' },
     { name: 'Experience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
 ];
