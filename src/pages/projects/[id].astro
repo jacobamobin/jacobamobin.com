@@ -1,0 +1,324 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header';
+import projectsData from '../../data/projects.json';
+import { FiGithub, FiExternalLink, FiArrowLeft, FiCalendar, FiMapPin, FiAward, FiSmartphone, FiMonitor, FiCpu } from 'react-icons/fi';
+
+export async function getStaticPaths() {
+  return projectsData.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+
+// Helper to fetch README content and extract media
+const getProjectMedia = async (githubUrl) => {
+    if (!githubUrl || !githubUrl.includes('github.com')) return { images: [], video: null };
+    
+    try {
+        const repoPath = githubUrl.replace('https://github.com/', '').replace(/\/$/, '');
+        const branches = ['main', 'master'];
+        let content = '';
+        let validBranch = '';
+
+        for (const branch of branches) {
+            const url = `https://raw.githubusercontent.com/${repoPath}/${branch}/README.md`;
+            const res = await fetch(url);
+            if (res.ok) {
+                content = await res.text();
+                validBranch = branch;
+                break;
+            }
+        }
+
+        if (!content) return { images: [], video: null };
+
+        const images = [];
+        let videoId = null;
+
+        // Regex for Markdown images
+        const mdRegex = /!\[.*?\]\((.*?)\)/g;
+        // Regex for HTML images
+        const htmlRegex = /<img[^>]+src="([^">]+)"/g;
+        // Regex for YouTube
+        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+
+        // Find Video
+        const videoMatch = content.match(youtubeRegex);
+        if (videoMatch) {
+            videoId = videoMatch[1];
+        }
+
+        let match;
+        // Check Markdown
+        while ((match = mdRegex.exec(content)) !== null) {
+            let imgUrl = match[1];
+            if (!imgUrl.startsWith('http')) {
+                if (imgUrl.startsWith('./')) imgUrl = imgUrl.substring(2);
+                if (imgUrl.startsWith('/')) imgUrl = imgUrl.substring(1);
+                imgUrl = `https://raw.githubusercontent.com/${repoPath}/${validBranch}/${imgUrl}`;
+            }
+            if (!imgUrl.includes('img.shields.io') && !imgUrl.includes('badge')) {
+                 images.push(imgUrl);
+            }
+        }
+        // Check HTML
+        while ((match = htmlRegex.exec(content)) !== null) {
+             let imgUrl = match[1];
+             if (!imgUrl.startsWith('http')) {
+                if (imgUrl.startsWith('./')) imgUrl = imgUrl.substring(2);
+                if (imgUrl.startsWith('/')) imgUrl = imgUrl.substring(1);
+                imgUrl = `https://raw.githubusercontent.com/${repoPath}/${validBranch}/${imgUrl}`;
+             }
+             if (!imgUrl.includes('img.shields.io') && !imgUrl.includes('badge')) {
+                 images.push(imgUrl);
+            }
+        }
+        
+        return { 
+            images: [...new Set(images)], // Remove duplicates
+            video: videoId 
+        };
+    } catch (e) {
+        console.error("Error fetching readme media", e);
+        return { images: [], video: null };
+    }
+};
+
+// Logic for gallery & video
+let galleryImages = project.gallery || [];
+let videoId = null;
+
+if (project.links?.github) {
+    const media = await getProjectMedia(project.links.github);
+    
+    if (galleryImages.length === 0) {
+        galleryImages = media.images;
+    }
+    videoId = media.video;
+}
+
+// User request: "put the banner in the images at the bottom and the youtube video on the right, if no video put the banner image"
+// So:
+// IF Video:
+//    Right: Video
+//    Gallery: Images + [Banner] (Maybe add banner to end of gallery?)
+// IF No Video:
+//    Right: Banner
+//    Gallery: Images
+
+const hasVideo = !!videoId;
+
+if (hasVideo && project.image) {
+    // Add banner to gallery if not present
+    if (!galleryImages.includes(project.image)) {
+        galleryImages.unshift(project.image);
+    }
+}
+
+// Ensure gallery doesn't just duplicate the main image if it's the *only* thing there and we are showing it on the right
+if (!hasVideo && galleryImages.length === 1 && galleryImages[0] === project.image) {
+    galleryImages = []; // Don't show redundant gallery
+}
+
+// Other projects (exclude current)
+const otherProjects = projectsData.filter(p => p.id !== project.id);
+---
+
+<Layout title={`${project.title} | Jacob Mobin`}>
+  <Header client:load />
+
+  <main class="min-h-screen bg-[#0a0a0b] pt-32 pb-24">
+    {/* Navigation */}
+    <div class="container mx-auto px-6 mb-12">
+      <a href="/#projects" class="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors group">
+        <FiArrowLeft class="group-hover:-translate-x-1 transition-transform" />
+        Back to Projects
+      </a>
+    </div>
+
+    <div class="container mx-auto px-6">
+      {/* Hero Section */}
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+        {/* Left: Info */}
+        <div class="mt-10">
+          <div class="flex items-center gap-3 mb-6">
+            {project.isHackathon ? (
+               <span class="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-bold uppercase tracking-wider">
+                 Hackathon
+               </span>
+            ) : (
+                <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-bold uppercase tracking-wider">
+                  Personal
+                </span>
+            )}
+            {project.placement && (
+               <span class="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                 <FiAward /> {project.placement}
+               </span>
+            )}
+          </div>
+          
+          <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            {project.title}
+          </h1>
+          
+          <p class="text-lg text-white/60 leading-relaxed mb-8">
+            {project.description}
+          </p>
+
+          <div class="flex flex-wrap gap-3 mb-10">
+             {project.technologies.map((tech) => (
+                <span class="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white/70">
+                    {tech.name}
+                </span>
+             ))}
+          </div>
+
+          <div class="flex items-center gap-4">
+            {project.links?.github && (
+              <a 
+                href={project.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-xl hover:bg-gray-200 transition-colors"
+              >
+                <FiGithub /> View Code
+              </a>
+            )}
+            {project.links?.appStore && (
+              <a 
+                href={project.links.appStore}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2 px-6 py-3 bg-[#0a84ff] text-white font-semibold rounded-xl hover:bg-[#007aff] transition-colors"
+              >
+                <FiSmartphone /> App Store
+              </a>
+            )}
+            {project.links?.devpost && (
+              <a 
+                href={project.links.devpost}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2 px-6 py-3 bg-[#0d1c2c] border border-white/10 text-white font-semibold rounded-xl hover:bg-[#1a2c40] transition-colors"
+              >
+                 <FiExternalLink /> Devpost
+              </a>
+            )}
+             {project.links?.website && (
+              <a 
+                href={project.links.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2 px-6 py-3 bg-[#111] border border-white/10 text-white font-semibold rounded-xl hover:bg-[#222] transition-colors"
+              >
+                 <FiExternalLink /> Live Site
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Right: Media (Video or Image) */}
+        <div>
+            {hasVideo ? (
+                <div class="relative w-full aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+                     <iframe
+                        width="100%"
+                        height="100%"
+                        src={`https://www.youtube.com/embed/${videoId}`}
+                        title="Project Video"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        class="absolute inset-0"
+                    ></iframe>
+                </div>
+            ) : (
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-blue-500/10 blur-3xl rounded-3xl -z-10 group-hover:bg-blue-500/20 transition-colors duration-500"></div>
+                    <img 
+                        src={project.image} 
+                        alt={project.title} 
+                        class="w-full h-auto rounded-3xl border border-white/10 shadow-2xl"
+                        transition:name={`project-image-${project.id}`}
+                    />
+                </div>
+            )}
+        </div>
+      </div>
+
+      {/* Gallery Section - Masonry Layout to fix whitespace */}
+      {galleryImages.length > 0 && (
+        <div class="mb-24">
+            <h2 class="text-2xl font-bold text-white mb-8">Snippet Gallery</h2>
+            
+            <div class="columns-1 md:columns-2 gap-4 space-y-4">
+            {galleryImages.map((img, index) => (
+                <div class="break-inside-avoid relative group rounded-2xl overflow-hidden border border-white/5 bg-[#111]">
+                    <img 
+                        src={img} 
+                        alt={`${project.title} screenshot ${index + 1}`}
+                        loading="lazy"
+                        class="w-full h-auto hover:scale-[1.02] transition-transform duration-500"
+                    />
+                    
+                    {/* Hover Overlay with Tags */}
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            {project.technologies.slice(0, 3).map((tech) => (
+                                <span class="px-2 py-1 text-xs font-mono bg-white/10 text-white rounded border border-white/20">
+                                    {tech.name}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            ))}
+            </div>
+        </div>
+      )}
+
+      {/* Other Projects Section */}
+      <div class="pt-12 border-t border-white/5">
+        <h2 class="text-2xl font-bold text-white mb-10">Other Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {otherProjects.map(p => (
+                <a href={`/projects/${p.id}`} class="block group">
+                    <div class="relative overflow-hidden rounded-xl border border-white/10 bg-[#121214] transition-all hover:border-white/20 h-full flex flex-col">
+                        <div class="h-48 overflow-hidden relative">
+                             <img
+                                src={p.image}
+                                alt={p.title}
+                                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            />
+                            {p.isHackathon ? (
+                             <div class="absolute top-3 left-3">
+                                <span class="text-[10px] font-bold text-black bg-amber-500 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                    Hackathon
+                                </span>
+                             </div>
+                            ) : (
+                                <div class="absolute top-3 left-3">
+                                <span class="text-[10px] font-bold text-white bg-emerald-500 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                    Personal
+                                </span>
+                                </div>
+                            )}
+                        </div>
+                        <div class="p-5 flex-1">
+                            <h3 class="text-lg font-bold text-white mb-2">{p.title}</h3>
+                            <p class="text-xs text-white/50 uppercase tracking-wide mb-4">{p.type}</p>
+                            <p class="text-sm text-white/60 line-clamp-2">{p.description}</p>
+                        </div>
+                    </div>
+                </a>
+            ))}
+        </div>
+      </div>
+
+    </div>
+  </main>
+</Layout>

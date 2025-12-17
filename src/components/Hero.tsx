@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { useEffect } from 'react';
-import { FiArrowRight, FiGithub, FiLinkedin } from 'react-icons/fi';
+import { FiArrowRight, FiGithub, FiLinkedin, FiMapPin } from 'react-icons/fi';
 import {
     SiPython, SiSwift, SiReact, SiTypescript, SiNodedotjs,
     SiJavascript, SiFirebase, SiPostgresql, SiMongodb, SiDocker,
@@ -104,7 +104,7 @@ const CodeWindow = () => (
             <p><span className="text-purple-400">const</span> <span className="text-blue-300">developer</span> <span className="text-white/60">=</span> <span className="text-white/80">{'{'}</span></p>
             <p className="pl-4"><span className="text-white/60">name:</span> <span className="text-emerald-400">"Jacob"</span>,</p>
             <p className="pl-4"><span className="text-white/60">passion:</span> <span className="text-emerald-400">"building"</span>,</p>
-            <p className="pl-4"><span className="text-white/60">coffee:</span> <span className="text-orange-400">true</span></p>
+            <p className="pl-4"><span className="text-white/60">coffee:</span> <span className="text-orange-400">false</span></p>
             <p><span className="text-white/80">{'}'}</span></p>
         </div>
     </div>
@@ -320,6 +320,19 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                             alt={name}
                             className="relative w-32 h-32 rounded-full object-cover border-2 border-white/10"
                         />
+
+                        {/* Location Pill (Overlapping) */}
+                        <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                            className="absolute -bottom-4 left-1/2 -translate-x-1/2 z-20"
+                        >
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0a0a0b]/80 border border-white/10 backdrop-blur-md shadow-lg whitespace-nowrap">
+                                <FiMapPin className="w-3 h-3 text-emerald-500" />
+                                <span className="text-white/60 text-xs font-medium tracking-wide">Toronto, ON</span>
+                            </div>
+                        </motion.div>
                     </div>
                 </motion.div>
 
@@ -343,6 +356,8 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                 >
                     {title}
                 </motion.p>
+
+
 
                 {/* Description */}
                 <motion.p
@@ -372,7 +387,7 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                         <FiArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                     </motion.a>
                     <motion.a
-                        href="#contact"
+                        href="mailto:jacob.mobin@gmail.com"
                         className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-transparent text-white font-medium text-[15px] rounded-full border border-white/20 hover:bg-white/[0.05] hover:border-white/30 transition-all duration-200"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}

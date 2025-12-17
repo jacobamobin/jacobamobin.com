@@ -28,8 +28,8 @@ export default function Header() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                    ? 'bg-[#0a0a0b]/90 backdrop-blur-2xl border-b border-white/[0.06]'
-                    : 'bg-transparent'
+                ? 'bg-[#0a0a0b] shadow-lg shadow-black/20'
+                : 'bg-transparent'
                 }`}
         >
             <nav className="max-w-6xl mx-auto px-6">

@@ -260,3 +260,17 @@ body {
 .shine:hover::before {
   left: 100%;
 }
+
+/* Vertical marquee for Hackathons */
+@keyframes marquee-vertical {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical 40s linear infinite;
+}
+
+.animate-marquee-vertical:hover {
+  animation-play-state: paused;
+}
