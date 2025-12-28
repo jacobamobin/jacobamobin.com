@@ -26,8 +26,8 @@ export default function Header() {
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                ? 'bg-[#0a0a0b] shadow-lg shadow-black/20'
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-150 ${isScrolled || isMobileMenuOpen
+                ? 'bg-[#0a0a0b]/95 backdrop-blur-md shadow-lg shadow-black/20'
                 : 'bg-transparent'
                 }`}
         >
@@ -99,9 +99,9 @@ export default function Header() {
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                            className="md:hidden overflow-hidden"
+                            className="md:hidden overflow-hidden absolute top-full left-0 right-0 bg-[#0a0a0b]/95 backdrop-blur-md border-b border-white/[0.06]"
                         >
-                            <div className="py-6 space-y-1 border-t border-white/[0.06]">
+                            <div className="py-6 space-y-1 px-6">
                                 {navLinks.map((link) => (
                                     <motion.a
                                         key={link.name}
@@ -118,6 +118,7 @@ export default function Header() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-1.5 px-2 py-3 text-[15px] font-medium text-accent"
+                                    onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     Resume
                                     <FiArrowUpRight className="w-4 h-4" />

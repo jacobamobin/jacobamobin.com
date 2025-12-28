@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { useEffect } from 'react';
-import { FiArrowRight, FiGithub, FiLinkedin, FiMapPin } from 'react-icons/fi';
+import { FiArrowRight, FiGithub, FiLinkedin, FiMapPin, FiMail } from 'react-icons/fi';
 import SkillsMarquee from './SkillsMarquee';
 
 
@@ -286,7 +286,7 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                     initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-white/40 max-w-lg mx-auto text-lg mb-12 leading-relaxed"
+                    className="hidden sm:block text-white/40 max-w-lg mx-auto text-lg mb-12 leading-relaxed"
                 >
                     I just like building things.
                 </motion.p>
@@ -296,20 +296,21 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                     initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex flex-col sm:flex-row gap-4 justify-center mb-14"
+                    className="flex flex-col sm:flex-row gap-4 justify-center mb-8 md:mb-14"
                 >
                     <motion.a
                         href="#project-carousel"
-                        className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#0a0a0b] font-semibold text-[15px] rounded-full hover:bg-white/90 transition-colors duration-200"
+                        className="group inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 bg-white text-[#0a0a0b] font-semibold text-sm sm:text-[15px] rounded-full hover:bg-white/90 transition-colors duration-200"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
                         View Projects
                         <FiArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                     </motion.a>
+                    {/* Hide on mobile, show on tablet+ */}
                     <motion.a
                         href="mailto:jacob.mobin@gmail.com"
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-transparent text-white font-medium text-[15px] rounded-full border border-white/20 hover:bg-white/[0.05] hover:border-white/30 transition-all duration-200"
+                        className="hidden sm:inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-transparent text-white font-medium text-[15px] rounded-full border border-white/20 hover:bg-white/[0.05] hover:border-white/30 transition-all duration-200"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
@@ -322,7 +323,7 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.7, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex justify-center gap-3"
+                    className="flex justify-center gap-3 mb-20 md:mb-0 pb-safe"
                 >
                     <motion.a
                         href="https://github.com/jacobamobin"
@@ -343,6 +344,14 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                         whileTap={{ scale: 0.95 }}
                     >
                         <FiLinkedin className="w-5 h-5" />
+                    </motion.a>
+                    {/* Email icon - shown on mobile only */}
+                    <motion.a
+                        href="mailto:jacob.mobin@gmail.com"
+                        className="sm:hidden p-3.5 rounded-full bg-white/[0.05] border border-white/[0.08] text-white/60 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.15] transition-all duration-200"
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <FiMail className="w-5 h-5" />
                     </motion.a>
                 </motion.div>
             </div>
