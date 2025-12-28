@@ -1,4 +1,7 @@
-import { motion } from 'framer-motion';
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import { motion, useAnimationFrame } from 'framer-motion';
 import {
     SiPython, SiSwift, SiReact, SiNodedotjs, SiJavascript,
     SiTailwindcss, SiFlask, SiGooglecloud, SiSpring, SiGithub,
@@ -36,32 +39,63 @@ const technologies = [
     { name: 'Bash', Icon: SiGnubash, color: '#4EAA25' },
 ];
 
+// Mobile-only: filter out duplicate icons (keep first occurrence)
+const mobileUniqueTechnologies = technologies.filter((tech, index, arr) =>
+    arr.findIndex(t => t.Icon === tech.Icon) === index
+);
+
 interface SkillsMarqueeProps {
     hero?: boolean;
 }
 
 export default function SkillsMarquee({ hero = false }: SkillsMarqueeProps) {
-    // Duplicate the array 4 times for seamless infinite scroll
-    const duplicatedTech = [...technologies, ...technologies, ...technologies, ...technologies];
+    const [isHovered, setIsHovered] = useState(false);
+    const xPos = useRef(0);
+    const currentSpeed = useRef(1);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const baseSpeed = 50; // pixels per second
+    const targetSpeed = isHovered ? 0 : 1;
+
+    // Smooth animation with eased speed transitions
+    useAnimationFrame((_, delta) => {
+        // Smoothly interpolate current speed towards target (0 when hovered, 1 when not)
+        const lerpFactor = 0.05; // Controls how fast the speed changes
+        currentSpeed.current += (targetSpeed - currentSpeed.current) * lerpFactor;
+
+        // Update position based on current speed
+        const movement = (baseSpeed * (delta / 1000)) * currentSpeed.current;
+        xPos.current -= movement;
+
+        // Get the width of half the content (one full set) for seamless wrapping
+        if (containerRef.current) {
+            const halfWidth = containerRef.current.scrollWidth / 2;
+            // Use modulo-style wrap to avoid jump - when we've scrolled past one full set, wrap back
+            if (xPos.current <= -halfWidth) {
+                xPos.current += halfWidth;
+            }
+            containerRef.current.style.transform = `translateX(${xPos.current}px)`;
+        }
+    });
+
+    // Duplicate the array 2 times for seamless infinite scroll
+    const duplicatedTech = [...technologies, ...technologies];
+    const duplicatedMobileTech = [...mobileUniqueTechnologies, ...mobileUniqueTechnologies];
 
     return (
-        <section className={`py-5 overflow-hidden ${hero ? 'absolute bottom-0 left-0 right-0 bg-[#0f0f11]/80 backdrop-blur-sm border-t border-white/[0.04]' : 'relative bg-[#0f0f11] border-y border-white/[0.04]'}`}>
+        <section
+            className={`py-5 overflow-hidden ${hero ? 'absolute bottom-0 left-0 right-0 bg-[#0f0f11]/80 backdrop-blur-sm border-t border-white/[0.04]' : 'relative bg-[#0f0f11] border-y border-white/[0.04]'}`}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             {/* Gradient overlays for fade effect */}
             <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0f0f11] to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0f0f11] to-transparent z-10 pointer-events-none" />
 
-            {/* Scrolling container */}
-            <motion.div
-                className="flex gap-10 items-center"
-                animate={{ x: ['0%', '-25%'] }}
-                transition={{
-                    x: {
-                        repeat: Infinity,
-                        repeatType: 'loop',
-                        duration: 12,
-                        ease: 'linear',
-                    },
-                }}
+            {/* Desktop scrolling container */}
+            <div
+                ref={containerRef}
+                className="hidden md:flex gap-10 items-center will-change-transform"
             >
                 {duplicatedTech.map((tech, index) => {
                     const Icon = tech.Icon;
@@ -74,15 +108,31 @@ export default function SkillsMarquee({ hero = false }: SkillsMarqueeProps) {
                                 className="w-6 h-6"
                                 style={{ color: tech.color }}
                             />
-                            <span
-                                className="text-base font-medium text-white/70"
-                            >
+                            <span className="text-base font-medium text-white/70">
                                 {tech.name}
                             </span>
                         </div>
                     );
                 })}
-            </motion.div>
+            </div>
+
+            {/* Mobile scrolling container - icons only, no duplicates */}
+            <div className="flex md:hidden gap-8 items-center skills-marquee-track">
+                {duplicatedMobileTech.map((tech, index) => {
+                    const Icon = tech.Icon;
+                    return (
+                        <div
+                            key={`mobile-${tech.name}-${index}`}
+                            className="shrink-0"
+                        >
+                            <Icon
+                                className="w-6 h-6"
+                                style={{ color: tech.color }}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
         </section>
     );
 }

@@ -63,11 +63,11 @@ export default function Experience() {
 
                                         {/* Content */}
                                         <div className="flex-1">
-                                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
                                                 <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">
                                                     {job.position}
                                                 </h3>
-                                                <span className="text-sm font-mono text-white/40 px-3 py-1 rounded-full border border-white/5 bg-white/[0.02]">
+                                                <span className="text-sm font-mono text-white/40 px-3 py-1 rounded-full border border-white/5 bg-white/[0.02] w-fit">
                                                     {job.startDate} - {job.endDate}
                                                 </span>
                                             </div>

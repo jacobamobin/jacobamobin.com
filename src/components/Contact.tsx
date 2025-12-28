@@ -31,27 +31,29 @@ export default function Contact() {
                             or just want to say hi, you can contact me at the email below!
                         </p>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <motion.a
                                 href="mailto:jacobmobin@gmail.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black font-semibold rounded-full overflow-hidden transition-transform active:scale-95"
-                                whileHover={{ scale: 1.05 }}
+                                className="group relative inline-flex items-center justify-center gap-2 w-44 py-3.5 bg-white text-black font-semibold text-[15px] rounded-full overflow-hidden transition-transform active:scale-95"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
                             >
                                 <span>Say Hello</span>
-                                <FiMail className="w-5 h-5 transition-transform group-hover:rotate-12" />
+                                <FiMail className="w-4 h-4" />
                             </motion.a>
 
                             <motion.a
                                 href={profile.resume || "/Resume.pdf"}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#1a1a1c] text-white font-medium rounded-full border border-white/10 hover:bg-[#252528] transition-colors"
-                                whileHover={{ scale: 1.05 }}
+                                className="group inline-flex items-center justify-center gap-2 w-44 py-3.5 bg-transparent text-white font-medium text-[15px] rounded-full border border-white/20 hover:bg-white/[0.05] hover:border-white/30 transition-all"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
                             >
                                 <span>View Resume</span>
-                                <FiArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                <FiArrowUpRight className="w-4 h-4" />
                             </motion.a>
                         </div>
                     </motion.div>

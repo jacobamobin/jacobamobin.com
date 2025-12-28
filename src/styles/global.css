@@ -274,3 +274,28 @@ body {
 .animate-marquee-vertical:hover {
   animation-play-state: paused;
 }
+
+/* Skills marquee - horizontal scroll */
+@keyframes skills-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.skills-marquee-track {
+  animation: skills-marquee 24s linear infinite;
+  will-change: transform;
+}
+
+.skills-marquee-track.paused {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

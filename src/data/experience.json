@@ -8,8 +8,8 @@
     "type": "Part-time, Remote",
     "location": "San Mateo, CA",
     "startDate": "Jun. 2025",
-    "endDate": "Present",
-    "current": true,
+    "endDate": "Dec. 2025",
+    "current": false,
     "showDescription": true,
     "description": [
       "Normalized 7M+ job records from multiple vendors into a unified format for natural language search.",
