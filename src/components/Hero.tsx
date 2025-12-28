@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FiArrowRight, FiGithub, FiLinkedin, FiMapPin, FiMail } from 'react-icons/fi';
 import SkillsMarquee from './SkillsMarquee';
 
@@ -94,6 +94,7 @@ const StatsCard = () => (
 );
 
 export default function Hero({ name, title, avatarUrl }: HeroProps) {
+    const [isMobile, setIsMobile] = useState(true); // Default to mobile for SSR
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
@@ -102,22 +103,33 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
     const y = useSpring(mouseY, springConfig);
 
     useEffect(() => {
+        // Check if mobile on mount
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        // Only add mouse tracking on desktop
         const handleMouseMove = (e: MouseEvent) => {
-            const { clientX, clientY } = e;
-            const { innerWidth, innerHeight } = window;
-            mouseX.set((clientX / innerWidth - 0.5) * 40);
-            mouseY.set((clientY / innerHeight - 0.5) * 40);
+            if (window.innerWidth >= 768) {
+                const { clientX, clientY } = e;
+                const { innerWidth, innerHeight } = window;
+                mouseX.set((clientX / innerWidth - 0.5) * 40);
+                mouseY.set((clientY / innerHeight - 0.5) * 40);
+            }
         };
 
         window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('resize', checkMobile);
+        };
     }, [mouseX, mouseY]);
 
     return (
         <section className="relative h-screen flex items-center justify-center overflow-hidden bg-[#0a0a0b]">
-            {/* Animated grid background */}
+            {/* Background */}
             <div className="absolute inset-0">
-                {/* Animated grid lines */}
+                {/* Grid lines - simplified on mobile */}
                 <div
                     className="absolute inset-0"
                     style={{
@@ -129,18 +141,6 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                     }}
                 />
 
-                {/* Subtle horizontal grid accent lines */}
-                <div
-                    className="absolute inset-0 opacity-30"
-                    style={{
-                        backgroundImage: `
-              linear-gradient(rgba(4, 102, 200, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(4, 102, 200, 0.03) 1px, transparent 1px)
-            `,
-                        backgroundSize: '160px 160px',
-                    }}
-                />
-
                 {/* Radial fade from center */}
                 <div
                     className="absolute inset-0"
@@ -149,49 +149,76 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                     }}
                 />
 
-                {/* Animated gradient orb */}
-                <motion.div
-                    className="absolute w-[1000px] h-[1000px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(4, 102, 200, 0.08) 0%, transparent 60%)',
-                        filter: 'blur(60px)',
-                        x,
-                        y,
-                    }}
-                />
+                {/* Desktop only: Animated gradient orbs with blur (GPU intensive) */}
+                {!isMobile && (
+                    <>
+                        {/* Subtle horizontal grid accent lines */}
+                        <div
+                            className="absolute inset-0 opacity-30"
+                            style={{
+                                backgroundImage: `
+                  linear-gradient(rgba(4, 102, 200, 0.03) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(4, 102, 200, 0.03) 1px, transparent 1px)
+                `,
+                                backgroundSize: '160px 160px',
+                            }}
+                        />
 
-                {/* Secondary animated orbs */}
-                <motion.div
-                    className="absolute w-[600px] h-[600px] rounded-full -top-20 -right-20"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(4, 102, 200, 0.05) 0%, transparent 70%)',
-                        filter: 'blur(80px)',
-                    }}
-                    animate={{
-                        scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                    }}
-                />
+                        {/* Animated gradient orb */}
+                        <motion.div
+                            className="absolute w-[1000px] h-[1000px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                            style={{
+                                background: 'radial-gradient(circle, rgba(4, 102, 200, 0.08) 0%, transparent 60%)',
+                                filter: 'blur(60px)',
+                                x,
+                                y,
+                            }}
+                        />
 
-                <motion.div
-                    className="absolute w-[500px] h-[500px] rounded-full -bottom-20 -left-20"
-                    style={{
-                        background: 'radial-gradient(circle, rgba(4, 102, 200, 0.04) 0%, transparent 70%)',
-                        filter: 'blur(80px)',
-                    }}
-                    animate={{
-                        scale: [1, 1.15, 1],
-                    }}
-                    transition={{
-                        duration: 12,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                    }}
-                />
+                        {/* Secondary animated orbs */}
+                        <motion.div
+                            className="absolute w-[600px] h-[600px] rounded-full -top-20 -right-20"
+                            style={{
+                                background: 'radial-gradient(circle, rgba(4, 102, 200, 0.05) 0%, transparent 70%)',
+                                filter: 'blur(80px)',
+                            }}
+                            animate={{
+                                scale: [1, 1.2, 1],
+                            }}
+                            transition={{
+                                duration: 10,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                            }}
+                        />
+
+                        <motion.div
+                            className="absolute w-[500px] h-[500px] rounded-full -bottom-20 -left-20"
+                            style={{
+                                background: 'radial-gradient(circle, rgba(4, 102, 200, 0.04) 0%, transparent 70%)',
+                                filter: 'blur(80px)',
+                            }}
+                            animate={{
+                                scale: [1, 1.15, 1],
+                            }}
+                            transition={{
+                                duration: 12,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                            }}
+                        />
+                    </>
+                )}
+
+                {/* Mobile: Simple static gradient instead of animated blurs */}
+                {isMobile && (
+                    <div
+                        className="absolute inset-0"
+                        style={{
+                            background: 'radial-gradient(circle at 50% 30%, rgba(4, 102, 200, 0.08) 0%, transparent 50%)',
+                        }}
+                    />
+                )}
             </div>
 
 
@@ -221,19 +248,11 @@ export default function Hero({ name, title, avatarUrl }: HeroProps) {
                     className="mb-10"
                 >
                     <div className="relative inline-block">
-                        {/* Subtle glow ring */}
-                        <motion.div
-                            className="absolute -inset-1 rounded-full opacity-50"
+                        {/* Subtle glow ring - static on mobile, animated on desktop */}
+                        <div
+                            className="absolute -inset-1 rounded-full opacity-40"
                             style={{
                                 background: 'linear-gradient(135deg, rgba(4, 102, 200, 0.4), rgba(4, 102, 200, 0.1))',
-                            }}
-                            animate={{
-                                opacity: [0.3, 0.5, 0.3],
-                            }}
-                            transition={{
-                                duration: 3,
-                                repeat: Infinity,
-                                ease: 'easeInOut',
                             }}
                         />
                         {/* Image */}
