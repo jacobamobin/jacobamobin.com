@@ -184,54 +184,53 @@ Be direct and evidence-based. Focus on what makes him stand out from other Compu
                                 style={{ zIndex: 99999 }}
                             >
                             <div
-                                className="relative w-full max-w-2xl bg-[#121214] rounded-2xl border border-white/10 shadow-2xl pointer-events-auto overflow-hidden"
+                                className="relative w-full max-w-2xl bg-[#121214] rounded-2xl border border-white/10 shadow-2xl pointer-events-auto overflow-hidden max-h-[90vh] flex flex-col"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 {/* Header */}
-                                <div className="relative p-8 border-b border-white/5">
+                                <div className="relative p-4 md:p-8 border-b border-white/5 flex-shrink-0">
                                     <button
                                         onClick={() => setIsOpen(false)}
-                                        className="absolute top-4 right-4 p-2 text-white/40 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+                                        className="absolute top-3 right-3 p-1.5 text-white/40 hover:text-white transition-colors rounded-lg hover:bg-white/5"
                                     >
-                                        <FiX className="w-5 h-5" />
+                                        <FiX className="w-4 h-4" />
                                     </button>
 
                                     <div>
-                                        <h2 className="text-3xl font-bold text-white mb-2">
+                                        <h2 className="text-xl md:text-3xl font-bold text-white mb-1 md:mb-2">
                                             Candidate Evaluation
                                         </h2>
-                                        <p className="text-white/60 text-sm">
+                                        <p className="text-white/60 text-xs md:text-sm">
                                             Get an honest, detailed assessment of Jacob's fit for your role
                                         </p>
                                     </div>
                                 </div>
 
-                                {/* Body */}
-                                <div className="p-8">
-                                    <label className="block text-white font-medium mb-3">
+                                {/* Body - Scrollable */}
+                                <div className="p-4 md:p-8 overflow-y-auto flex-1">
+                                    <label className="block text-white text-sm font-medium mb-2 md:mb-3">
                                         What are you looking for? <span className="text-white/40">(optional)</span>
                                     </label>
-                                    <p className="text-white/40 text-sm mb-4">
-                                        Describe your ideal candidate or paste in a job description. The more specific, the better the evaluation.
+                                    <p className="text-white/40 text-xs md:text-sm mb-3 md:mb-4">
+                                        Describe your ideal candidate or paste in a job description.
+                                        <span className="hidden md:inline"> The more specific, the better the evaluation.</span>
                                         <br />
-                                        <span className="text-white/30">Leave blank to get a general "why should I hire him" overview.</span>
+                                        <span className="text-white/30">Leave blank for general overview.</span>
                                     </p>
 
                                     <textarea
                                         value={requirements}
                                         onChange={(e) => setRequirements(e.target.value)}
-                                        placeholder="Example: Looking for a Full-Stack Developer with experience in React, Node.js, and ML. Must have worked on production systems at scale.
-
-Or leave blank and click below to get a general overview of why you should hire Jacob."
-                                        className="w-full h-48 px-4 py-3 bg-[#0a0a0b] border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 resize-none"
+                                        placeholder="Example: Looking for a Full-Stack Developer with React, Node.js, and ML experience..."
+                                        className="w-full h-24 md:h-48 px-3 py-2 md:px-4 md:py-3 bg-[#0a0a0b] border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/20 resize-none text-sm"
                                     />
 
-                                    <div className="mt-4 p-4 bg-white/5 border border-white/10 rounded-xl">
-                                        <div className="flex items-start gap-3 mb-2">
-                                            <FiCheckCircle className="w-4 h-4 text-white/60 mt-0.5 shrink-0" />
-                                            <p className="text-white/60 text-sm font-medium">How this works</p>
+                                    <div className="mt-3 md:mt-4 p-3 md:p-4 bg-white/5 border border-white/10 rounded-xl">
+                                        <div className="flex items-start gap-2 md:gap-3 mb-2">
+                                            <FiCheckCircle className="w-3 h-3 md:w-4 md:h-4 text-white/60 mt-0.5 shrink-0" />
+                                            <p className="text-white/60 text-xs md:text-sm font-medium">How this works</p>
                                         </div>
-                                        <ul className="text-white/40 text-xs space-y-1 ml-7">
+                                        <ul className="text-white/40 text-[10px] md:text-xs space-y-1 ml-4 md:ml-7">
                                             <li>Analyzes Jacob's experience, projects, and technical skills</li>
                                             <li>Provides honest strengths, gaps, and recommendation</li>
                                             <li>Cites specific evidence from his portfolio</li>
@@ -240,21 +239,21 @@ Or leave blank and click below to get a general overview of why you should hire 
                                     </div>
 
                                     {/* Action Buttons */}
-                                    <div className="flex gap-3 mt-6">
+                                    <div className="flex flex-col md:flex-row gap-2 md:gap-3 mt-4 md:mt-6">
                                         <motion.button
                                             onClick={handleSubmit}
-                                            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-white text-black rounded-xl font-semibold hover:bg-gray-200 transition-all"
+                                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 md:px-6 md:py-3 bg-white text-black rounded-xl font-semibold hover:bg-gray-200 transition-all text-sm"
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
                                         >
                                             {requirements.trim() ? (
                                                 <>
-                                                    <FiSend className="w-4 h-4" />
+                                                    <FiSend className="w-3.5 h-3.5" />
                                                     Evaluate Candidate
                                                 </>
                                             ) : (
                                                 <>
-                                                    <FiBriefcase className="w-4 h-4" />
+                                                    <FiBriefcase className="w-3.5 h-3.5" />
                                                     Why should I hire him?
                                                 </>
                                             )}
@@ -262,7 +261,7 @@ Or leave blank and click below to get a general overview of why you should hire 
 
                                         <motion.button
                                             onClick={() => setIsOpen(false)}
-                                            className="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl font-medium transition-colors"
+                                            className="px-4 py-2.5 md:px-6 md:py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl font-medium transition-colors text-sm"
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
                                         >
