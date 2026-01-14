@@ -1,5 +1,43 @@
 [
   {
+    "id": "gore-mutual",
+    "company": "Gore Mutual Insurance",
+    "companyUrl": "https://goremutual.ca",
+    "logo": "/images/work/gore.png",
+    "position": "Data Engineer - Data Platform",
+    "type": "Co-op",
+    "location": "Cambridge, ON",
+    "startDate": "Jan. 2026",
+    "endDate": "Apr. 2026",
+    "current": false,
+    "showDescription": true,
+    "description": [
+      "Working on something big."
+    ],
+    "technologies": [
+      {
+        "name": "???",
+        "color": "#9B59B6"
+      },
+      {
+        "name": "???",
+        "color": "#4285F4"
+      },
+      {
+        "name": "???",
+        "color": "#38A169"
+      },
+      {
+        "name": "???",
+        "color": "#FF6B6B"
+      },
+      {
+        "name": "???",
+        "color": "#E67E22"
+      }
+    ]
+  },
+  {
     "id": "callings-ai",
     "company": "Callings.AI",
     "companyUrl": "https://callings.ai",

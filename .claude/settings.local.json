@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(lsof:*)",
-      "Bash(xargs kill:*)"
+      "Bash(xargs kill:*)",
+      "Bash(npm run build:*)",
+      "Bash(cat:*)",
+      "Bash(python3:*)"
     ]
   }
 }
