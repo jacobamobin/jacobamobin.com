@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { FiCalendar, FiMapPin, FiBriefcase } from 'react-icons/fi';
 import experienceData from '../data/experience.json';
+import HiringManagerButton from './HiringManagerButton';
 
 export default function Experience() {
     return (
@@ -111,6 +112,11 @@ export default function Experience() {
                                 </div>
                             </motion.div>
                         ))}
+                    </div>
+
+                    {/* Hiring Manager Button */}
+                    <div className="mt-16 flex justify-center">
+                        <HiringManagerButton />
                     </div>
                 </div>
             </div>
