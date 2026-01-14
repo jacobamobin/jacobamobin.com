@@ -1,0 +1,62 @@
+[
+  {
+    "id": "sourced-first-place",
+    "project": "Sourced",
+    "hackathon": "Sheridan Datathon 2025",
+    "placement": "1st Overall",
+    "prize": 1250,
+    "type": "gold",
+    "description": "1st Place Overall (Solo) - Sheridan Datathon 2025",
+    "projectId": "sourced"
+  },
+  {
+    "id": "bin-buddy-first",
+    "project": "Bin Buddy",
+    "hackathon": "SolutionHacks",
+    "placement": "1st Overall",
+    "prize": 1000,
+    "type": "gold",
+    "description": "1st Place Overall - SolutionHacks",
+    "projectId": "bin-buddy"
+  },
+  {
+    "id": "sourced-best-solo",
+    "project": "Sourced",
+    "hackathon": "Sheridan Datathon 2025",
+    "placement": "Best Solo Hack",
+    "prize": 200,
+    "type": "trophy",
+    "description": "Best Solo Hack - Sheridan Datathon 2025",
+    "projectId": "sourced"
+  },
+  {
+    "id": "go-on-racer-third",
+    "project": "Go on Racer",
+    "hackathon": "Go on Hacks",
+    "placement": "3rd Place",
+    "prize": 67,
+    "type": "bronze",
+    "description": "3rd Place - Go on Hacks",
+    "projectId": "go-on-racer"
+  },
+  {
+    "id": "rsx-fourth",
+    "project": "Star Robotics",
+    "hackathon": "Robotics for Space Exploration",
+    "placement": "4th Place",
+    "prize": 0,
+    "type": "fourth",
+    "description": "4th Place - Robotics for Space Exploration",
+    "projectId": "rsx-2024"
+  },
+  {
+    "id": "ds3-ninth",
+    "project": "DS3 Datathon",
+    "hackathon": "DS3 Datathon",
+    "placement": "9th Place",
+    "prize": 0,
+    "type": "participant",
+    "description": "9th Place - DS3 Datathon",
+    "projectId": "ds3-datathon"
+  }
+]

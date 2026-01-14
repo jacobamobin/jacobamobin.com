@@ -3,6 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header';
 import projectsData from '../../data/projects.json';
 import { FiGithub, FiExternalLink, FiArrowLeft, FiCalendar, FiMapPin, FiAward, FiSmartphone, FiMonitor, FiCpu } from 'react-icons/fi';
+import fs from 'fs';
+import path from 'path';
 
 export async function getStaticPaths() {
   return projectsData.map((project) => ({
@@ -13,10 +15,70 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 
+// Helper to fetch Devpost content and extract media
+const getDevpostMedia = async (devpostUrl) => {
+    if (!devpostUrl || !devpostUrl.includes('devpost.com')) return { images: [], video: null };
+
+    try {
+        const res = await fetch(devpostUrl);
+        if (!res.ok) return { images: [], video: null };
+
+        const html = await res.text();
+        const images = [];
+        let videoId = null;
+
+        // Extract YouTube video ID from various Devpost formats
+        const youtubePatterns = [
+            /youtube\.com\/embed\/([^"&?\/\s]{11})/,
+            /youtube\.com\/watch\?v=([^"&?\/\s]{11})/,
+            /youtu\.be\/([^"&?\/\s]{11})/,
+            /youtube\.com\/v\/([^"&?\/\s]{11})/
+        ];
+
+        for (const pattern of youtubePatterns) {
+            const match = html.match(pattern);
+            if (match) {
+                videoId = match[1];
+                break;
+            }
+        }
+
+        // Extract images from Devpost gallery
+        const imgRegex = /<img[^>]+src="([^">]+)"/g;
+        let match;
+        while ((match = imgRegex.exec(html)) !== null) {
+            let imgUrl = match[1];
+            // Filter out badges, icons, and user avatars
+            if (imgUrl.includes('img.shields.io') ||
+                imgUrl.includes('badge') ||
+                imgUrl.includes('avatar') ||
+                imgUrl.includes('logo') ||
+                imgUrl.includes('icon') ||
+                imgUrl.includes('user-thumbnail')) {
+                continue;
+            }
+            if (imgUrl.startsWith('//')) {
+                imgUrl = 'https:' + imgUrl;
+            }
+            if (imgUrl.startsWith('http')) {
+                images.push(imgUrl);
+            }
+        }
+
+        return {
+            images: [...new Set(images)],
+            video: videoId
+        };
+    } catch (e) {
+        console.error("Error fetching devpost media", e);
+        return { images: [], video: null };
+    }
+};
+
 // Helper to fetch README content and extract media
 const getProjectMedia = async (githubUrl) => {
     if (!githubUrl || !githubUrl.includes('github.com')) return { images: [], video: null };
-    
+
     try {
         const repoPath = githubUrl.replace('https://github.com/', '').replace(/\/$/, '');
         const branches = ['main', 'master'];
@@ -76,10 +138,10 @@ const getProjectMedia = async (githubUrl) => {
                  images.push(imgUrl);
             }
         }
-        
-        return { 
+
+        return {
             images: [...new Set(images)], // Remove duplicates
-            video: videoId 
+            video: videoId
         };
     } catch (e) {
         console.error("Error fetching readme media", e);
@@ -89,15 +151,69 @@ const getProjectMedia = async (githubUrl) => {
 
 // Logic for gallery & video
 let galleryImages = project.gallery || [];
-let videoId = null;
+let videoId = project.videoId || null;
 
-if (project.links?.github) {
-    const media = await getProjectMedia(project.links.github);
-    
-    if (galleryImages.length === 0) {
-        galleryImages = media.images;
+// If no gallery defined, check for local gallery folder
+if (galleryImages.length === 0) {
+    try {
+        const publicDir = path.join(process.cwd(), 'public');
+        const galleryDirPath = path.join(publicDir, 'images', 'project-gallery', project.id);
+        const metadataPath = path.join(galleryDirPath, 'metadata.json');
+
+        // Try to read metadata for video ID
+        if (!videoId && fs.existsSync(metadataPath)) {
+            try {
+                const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf-8'));
+                videoId = metadata?.videoId || null;
+            } catch (e) {
+                // No metadata file, that's okay
+            }
+        }
+
+        // Check if gallery directory exists and read images
+        if (fs.existsSync(galleryDirPath)) {
+            const files = fs.readdirSync(galleryDirPath);
+            const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+
+            galleryImages = files
+                .filter(file => {
+                    const ext = path.extname(file).toLowerCase();
+                    return imageExtensions.includes(ext);
+                })
+                .sort()
+                .map(file => `/images/project-gallery/${project.id}/${file}`);
+        }
+    } catch (e) {
+        console.log('No local gallery found for', project.id);
     }
-    videoId = media.video;
+}
+
+// Fallback: Fetch from Devpost/GitHub if no local gallery exists
+if (galleryImages.length === 0) {
+    let allImages = [];
+
+    // Fetch from Devpost first (priority for video)
+    if (project.links?.devpost) {
+        const devpostMedia = await getDevpostMedia(project.links.devpost);
+        if (!videoId && devpostMedia.video) {
+            videoId = devpostMedia.video;
+        }
+        allImages = [...allImages, ...devpostMedia.images];
+    }
+
+    // Fetch from GitHub
+    if (project.links?.github) {
+        const githubMedia = await getProjectMedia(project.links.github);
+
+        // Only use GitHub video if no Devpost video found
+        if (!videoId && githubMedia.video) {
+            videoId = githubMedia.video;
+        }
+
+        allImages = [...allImages, ...githubMedia.images];
+    }
+
+    galleryImages = [...new Set(allImages)]; // Remove duplicates
 }
 
 // User request: "put the banner in the images at the bottom and the youtube video on the right, if no video put the banner image"
@@ -224,24 +340,26 @@ const otherProjects = projectsData.filter(p => p.id !== project.id);
         {/* Right: Media (Video or Image) */}
         <div>
             {hasVideo ? (
-                <div class="relative w-full aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+                <div class="relative w-full aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-black group">
                      <iframe
                         width="100%"
                         height="100%"
-                        src={`https://www.youtube.com/embed/${videoId}`}
+                        src={`https://www.youtube.com/embed/${videoId}?autoplay=0&mute=0&controls=1&loop=0&rel=0&modestbranding=1`}
                         title="Project Video"
                         frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen
                         class="absolute inset-0"
                     ></iframe>
+                    {/* Subtle gradient overlay */}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
             ) : (
                 <div class="relative group">
                     <div class="absolute inset-0 bg-blue-500/10 blur-3xl rounded-3xl -z-10 group-hover:bg-blue-500/20 transition-colors duration-500"></div>
-                    <img 
-                        src={project.image} 
-                        alt={project.title} 
+                    <img
+                        src={project.image}
+                        alt={project.title}
                         class="w-full h-auto rounded-3xl border border-white/10 shadow-2xl"
                         transition:name={`project-image-${project.id}`}
                     />

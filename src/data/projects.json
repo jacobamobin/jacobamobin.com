@@ -1,5 +1,69 @@
 [
     {
+        "id": "sourced",
+        "title": "Sourced",
+        "type": "WEB APPLICATION - SUPPLY CHAIN AI",
+        "description": "An AI-powered supply chain transparency tool that transforms photos of electronic devices into interactive 3D exploded views and global manufacturing maps. Built for Sheridan Datathon 2025, Sourced uses Google Gemini 2.5 Pro Vision and Meta's SAM 3D to identify devices, reconstruct internals, and trace components to their real-world manufacturing origins. Supports UN SDG 12 for responsible consumption.",
+        "image": "/images/projects/sourced.png",
+        "isHackathon": true,
+        "placement": "1st Overall & Best Solo Hack",
+        "featured": true,
+        "awards": [
+            {
+                "type": "gold",
+                "prize": 1250,
+                "title": "1st Overall"
+            },
+            {
+                "type": "trophy",
+                "prize": 200,
+                "title": "Best Solo Hack"
+            }
+        ],
+        "links": {
+            "github": "https://github.com/jacobamobin/Sourced",
+            "devpost": "https://devpost.com/software/sourced"
+        },
+        "technologies": [
+            {
+                "name": "React",
+                "color": "#61DAFB"
+            },
+            {
+                "name": "Vite",
+                "color": "#646CFF"
+            },
+            {
+                "name": "TailwindCSS",
+                "color": "#38B2AC"
+            },
+            {
+                "name": "React Three Fiber",
+                "color": "#000000"
+            },
+            {
+                "name": "Python",
+                "color": "#3776AB"
+            },
+            {
+                "name": "Flask",
+                "color": "#000000"
+            },
+            {
+                "name": "Google Gemini",
+                "color": "#4285F4"
+            },
+            {
+                "name": "Meta SAM 3D",
+                "color": "#0668E1"
+            },
+            {
+                "name": "Framer Motion",
+                "color": "#0055FF"
+            }
+        ]
+    },
+    {
         "id": "ontario-car-meets",
         "title": "GTA (Ontario) Car Meets",
         "type": "FULL-STACK APPLICATION",
@@ -212,6 +276,13 @@
         "isHackathon": true,
         "placement": "1st Overall",
         "featured": true,
+        "awards": [
+            {
+                "type": "gold",
+                "prize": 1000,
+                "title": "1st Overall"
+            }
+        ],
         "links": {
             "github": "https://github.com/XDAathi/Bin-Buddy",
             "devpost": "https://devpost.com/software/bin-buddy-ld8uak"
@@ -300,6 +371,13 @@
         "isHackathon": true,
         "placement": "9th",
         "featured": false,
+        "awards": [
+            {
+                "type": "participant",
+                "prize": 0,
+                "title": "9th Place"
+            }
+        ],
         "links": {
             "github": "https://github.com/XDAathi/DS3-Datathon"
         },

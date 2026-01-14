@@ -4,9 +4,10 @@ import { HiOutlineMenuAlt3, HiOutlineX } from 'react-icons/hi';
 import { FiArrowUpRight } from 'react-icons/fi';
 
 const navLinks = [
-    { name: 'Projects', href: '#project-carousel' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Startups', href: '/#startups' },
+    { name: 'Projects', href: '/#project-carousel' },
+    { name: 'Experience', href: '/#experience' },
+    { name: 'Contact', href: '/#contact' },
 ];
 
 export default function Header() {

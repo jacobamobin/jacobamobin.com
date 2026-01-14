@@ -118,6 +118,13 @@
         "description": "Secured 4th place in the Robotics for Space Exploration competition at the University of Toronto where I and a team of 3 others built a robot that competed in multiple challenges mimiking the challenges real rovers face on mars and other celestial bodies.",
         "achievement": "4th Place",
         "image": "/images/hackathons/rsx.png",
+        "awards": [
+            {
+                "type": "fourth",
+                "prize": 0,
+                "title": "4th Place"
+            }
+        ],
         "technologies": [
             {
                 "name": "Python",

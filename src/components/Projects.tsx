@@ -1,11 +1,33 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAnimationFrame } from 'framer-motion';
 import { ActivityCalendar } from 'react-activity-calendar';
+import { FiAward, FiStar } from 'react-icons/fi';
+import { GiTrophy, GiPodiumWinner, GiLaurelsTrophy } from 'react-icons/gi';
+import { HiOutlineTrophy } from 'react-icons/hi2';
 import projectsData from '../data/projects.json';
+import Awards from './Awards';
 
 // Split projects by type
 const personalProjects = projectsData.filter(p => !p.isHackathon);
 const hackathonProjects = projectsData.filter(p => p.isHackathon);
+
+// Helper function to get icon component and style based on award type
+const getAwardIcon = (type: string) => {
+    switch (type) {
+        case 'gold':
+            return { Icon: GiTrophy, color: 'text-yellow-400', bg: 'bg-yellow-500/20', border: 'border-yellow-500/30' };
+        case 'bronze':
+            return { Icon: GiPodiumWinner, color: 'text-orange-400', bg: 'bg-orange-700/20', border: 'border-orange-600/30' };
+        case 'trophy':
+            return { Icon: HiOutlineTrophy, color: 'text-purple-400', bg: 'bg-purple-500/20', border: 'border-purple-500/30' };
+        case 'fourth':
+            return { Icon: FiStar, color: 'text-blue-400', bg: 'bg-blue-500/20', border: 'border-blue-500/30' };
+        case 'participant':
+            return { Icon: GiLaurelsTrophy, color: 'text-gray-400', bg: 'bg-gray-500/20', border: 'border-gray-500/30' };
+        default:
+            return { Icon: FiAward, color: 'text-white', bg: 'bg-white/10', border: 'border-white/20' };
+    }
+};
 
 // --- Project Card Component (Desktop) ---
 const ProjectCard = ({ project }: { project: any }) => {
@@ -15,16 +37,47 @@ const ProjectCard = ({ project }: { project: any }) => {
         <a href={`/projects/${project.id}`} className="block w-[300px] shrink-0 group">
             <div className="h-full overflow-hidden rounded-xl border border-white/10 bg-[#121214] transition-all group-hover:border-white/20 relative">
                 {/* Image */}
-                <div className="h-40 overflow-hidden bg-[#1a1a1d]">
+                <div className="h-40 overflow-hidden bg-[#1a1a1d] relative">
                     <img
                         src={project.image}
                         alt={project.title}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
+
+                    {/* Award Medals on Image */}
+                    {project.awards && project.awards.length > 0 && (
+                        <div className="absolute top-2 right-2 flex gap-1 z-10">
+                            {project.awards.map((award: any, idx: number) => {
+                                const { Icon, color, bg, border } = getAwardIcon(award.type);
+                                return (
+                                    <div key={idx} className="group/medal relative">
+                                        <div
+                                            className={`w-8 h-8 rounded-full ${bg} backdrop-blur-sm border ${border} flex items-center justify-center shadow-lg ${color} transition-transform hover:scale-110`}
+                                        >
+                                            <Icon className="w-4 h-4" />
+                                        </div>
+                                        {/* Tooltip */}
+                                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 group-hover/medal:opacity-100 pointer-events-none transition-opacity duration-200 z-[200]">
+                                            <div className="bg-[#1a1a1d] border border-white/10 rounded-lg px-2 py-1.5 shadow-xl whitespace-nowrap">
+                                                <p className={`text-xs font-bold ${color} mb-0.5`}>
+                                                    {award.title}
+                                                </p>
+                                                {award.prize > 0 && (
+                                                    <p className="text-xs text-emerald-400 font-semibold">
+                                                        ${award.prize.toLocaleString()}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
 
                 {/* Content */}
-                <div className="p-4 relative">
+                <div className="p-4 relative min-h-[110px]">
                     {/* Internal Glow */}
                     <div className={`absolute inset-0 bg-gradient-to-t ${glowColor} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 
@@ -40,8 +93,8 @@ const ProjectCard = ({ project }: { project: any }) => {
                                 </span>
                             )}
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-1 truncate">{project.title}</h3>
-                        <p className="text-xs text-white/50 truncate uppercase tracking-wide">{project.type}</p>
+                        <h3 className="text-base font-bold text-white mb-1 line-clamp-2 leading-tight">{project.title}</h3>
+                        <p className="text-xs text-white/50 line-clamp-1 uppercase tracking-wide">{project.type}</p>
                     </div>
                 </div>
             </div>
@@ -73,16 +126,47 @@ const MobileProjectCard = ({ project, showBadge = true }: { project: any; showBa
         <a href={`/projects/${project.id}`} className="block w-[calc(100vw-48px)] max-w-[340px] group">
             <div className="h-[280px] overflow-hidden rounded-xl border border-white/10 bg-[#121214] transition-all group-hover:border-white/20 relative flex flex-col">
                 {/* Image */}
-                <div className="h-44 shrink-0 overflow-hidden bg-[#1a1a1d]">
+                <div className="h-44 shrink-0 overflow-hidden bg-[#1a1a1d] relative">
                     <img
                         src={project.image}
                         alt={project.title}
                         className="h-full w-full object-cover"
                     />
+
+                    {/* Award Medals on Image */}
+                    {project.awards && project.awards.length > 0 && (
+                        <div className="absolute top-2 right-2 flex gap-1 z-10">
+                            {project.awards.map((award: any, idx: number) => {
+                                const { Icon, color, bg, border } = getAwardIcon(award.type);
+                                return (
+                                    <div key={idx} className="group/medal relative">
+                                        <div
+                                            className={`w-8 h-8 rounded-full ${bg} backdrop-blur-sm border ${border} flex items-center justify-center shadow-lg ${color} transition-transform hover:scale-110`}
+                                        >
+                                            <Icon className="w-4 h-4" />
+                                        </div>
+                                        {/* Tooltip */}
+                                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 group-hover/medal:opacity-100 pointer-events-none transition-opacity duration-200 z-[200]">
+                                            <div className="bg-[#1a1a1d] border border-white/10 rounded-lg px-2 py-1.5 shadow-xl whitespace-nowrap">
+                                                <p className={`text-xs font-bold ${color} mb-0.5`}>
+                                                    {award.title}
+                                                </p>
+                                                {award.prize > 0 && (
+                                                    <p className="text-xs text-emerald-400 font-semibold">
+                                                        ${award.prize.toLocaleString()}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
 
                 {/* Content */}
-                <div className="p-4 relative flex-1 flex flex-col">
+                <div className="p-4 relative flex-1 flex flex-col min-h-[120px]">
                     <div className={`absolute inset-0 bg-gradient-to-t ${glowColor} opacity-50 transition-opacity duration-500`} />
 
                     <div className="relative z-10 flex-1 flex flex-col">
@@ -94,7 +178,7 @@ const MobileProjectCard = ({ project, showBadge = true }: { project: any; showBa
                                 </span>
                             </div>
                         )}
-                        <h3 className="text-lg font-bold text-white mb-1 line-clamp-1">{project.title}</h3>
+                        <h3 className="text-lg font-bold text-white mb-1 line-clamp-2 leading-snug">{project.title}</h3>
                         <p className="text-xs text-white/50 uppercase tracking-wide line-clamp-1">{project.type}</p>
                     </div>
                 </div>
@@ -164,16 +248,16 @@ export default function Projects() {
     // Split projects into rows for the marquee
     const row1 = projectsData.slice(0, 5);
     const row2 = projectsData.slice(5, 9);
-    // Duplicate 2x for seamless scroll (pixel-based animation)
-    const marqueeRow1 = [...row1, ...row1];
-    const marqueeRow2 = [...row2, ...row2];
+    // Duplicate 4x for seamless scroll (pixel-based animation)
+    const marqueeRow1 = [...row1, ...row1, ...row1, ...row1];
+    const marqueeRow2 = [...row2, ...row2, ...row2, ...row2];
 
     return (
-        <section id="projects" className="py-24 bg-[#0a0a0b] relative overflow-hidden">
+        <section id="projects" className="py-24 bg-[#0a0a0b] relative overflow-x-hidden">
             {/* Background elements */}
             <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-            <div className="container mx-auto px-6 relative z-10 mb-20">
+            <div className="container mx-auto px-6 relative z-10 mb-20 pt-8">
                 {/* 1. Git Graph Section */}
                 <div className="mb-24">
                     {/* Story / Intro */}
@@ -185,17 +269,24 @@ export default function Projects() {
                     </div>
 
                     <div className="flex justify-center w-full px-4">
-                        <div className="w-full max-w-5xl bg-black/40 rounded-xl p-4 md:p-8 overflow-hidden">
+                        <div className="w-full max-w-5xl bg-black/40 rounded-xl p-4 md:p-8 overflow-visible">
 
-                            {/* Header: Handle */}
-                            <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
-                                <img
-                                    src="/images/profile/pfp.png"
-                                    alt="Jacob Mobin"
-                                    className="w-10 h-10 rounded-full border border-white/10"
-                                />
-                                <div className="text-white font-medium text-lg flex items-center gap-2">
-                                    <span className="text-white/60">@jacobamobin</span> on GitHub
+                            {/* Header: Handle and Awards */}
+                            <div className="flex items-start justify-between mb-6 md:mb-8 gap-4 pt-4">
+                                <div className="flex items-center gap-3 md:gap-4">
+                                    <img
+                                        src="/images/profile/pfp.png"
+                                        alt="Jacob Mobin"
+                                        className="w-10 h-10 rounded-full border border-white/10"
+                                    />
+                                    <div className="text-white font-medium text-lg flex items-center gap-2">
+                                        <span className="text-white/60">@jacobamobin</span> on GitHub
+                                    </div>
+                                </div>
+
+                                {/* Awards in top right - desktop only */}
+                                <div className="hidden md:block pt-2">
+                                    <Awards />
                                 </div>
                             </div>
 

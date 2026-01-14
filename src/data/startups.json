@@ -1,0 +1,76 @@
+[
+  {
+    "id": "resumate",
+    "name": "Resumate",
+    "tagline": "by StreamlineX",
+    "url": "https://resumate.ca",
+    "image": "/images/startups/resumate.txt",
+    "videoEmbed": "https://www.youtube.com/embed/zE8t6ItEl6o?playlist=zE8t6ItEl6o,iiQBA6SQuNQ&autoplay=1&mute=1&controls=0&loop=1&playsinline=1&rel=0&iv_load_policy=3",
+    "description": "Developed a Chrome extension that uses an LLM to generate job-specific resume rewrites in one click.",
+    "location": "Toronto, ON",
+    "startDate": "Feb. 2025",
+    "endDate": "Present",
+    "current": true,
+    "badge": "Main Venture",
+    "accentColor": "#da3c09",
+    "technologies": [
+      {
+        "name": "Chrome Extension",
+        "color": "#4285F4"
+      },
+      {
+        "name": "Node.js",
+        "color": "#339933"
+      },
+      {
+        "name": "Firebase",
+        "color": "#FFCA28"
+      },
+      {
+        "name": "Stripe",
+        "color": "#635BFF"
+      },
+      {
+        "name": "LLM",
+        "color": "#9B59B6"
+      }
+    ]
+  },
+  {
+    "id": "vibe",
+    "name": "Vibe",
+    "tagline": "Distributed Semantic Cache",
+    "url": "https://vibecache.net",
+    "image": "/images/startups/vibe.webp",
+    "videoEmbed": null,
+    "description": "Developed a Distributed semantic caching network for Large Language Models.",
+    "location": "Toronto, ON",
+    "startDate": "Dec. 2025",
+    "endDate": "Present",
+    "current": true,
+    "badge": "Latest Venture",
+    "accentColor": "#3e348b",
+    "technologies": [
+      {
+        "name": "Rust",
+        "color": "#CE422B"
+      },
+      {
+        "name": "React",
+        "color": "#61DAFB"
+      },
+      {
+        "name": "Astro",
+        "color": "#FF5D01"
+      },
+      {
+        "name": "Supabase",
+        "color": "#3ECF8E"
+      },
+      {
+        "name": "AWS",
+        "color": "#FF9900"
+      }
+    ]
+  }
+]
